@@ -13,6 +13,7 @@
 #include <vector>
 #include <map>
 #include <fstream>
+#include <ctype.h>
 
 class Dataframe{
 private:
@@ -21,14 +22,16 @@ private:
      */
     std::vector<std::vector<double>> data;
     std::vector<std::string> col_names;
+    void* data;
     //--------------------------------------private functions--------------------------------------
     std::vector<std::string> split(std::string str, char delimiter = ',');
 public:
     /*
      Public members used to access information about the data
      */
-    int rows;
-    int cols;
+    std::vector<std::string> col_types;
+    int row_count;
+    int col_count;
     //--------------------------------------public functions--------------------------------------
     /*
      Constructor: takes a filename and a delimiter and reads the contents of the file

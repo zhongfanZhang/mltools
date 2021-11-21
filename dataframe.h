@@ -20,9 +20,8 @@ private:
     /*
      vectors to contain the data read from the file and the names of the columns
      */
-    std::vector<std::vector<double>> data;
     std::vector<std::string> col_names;
-    void* data;
+    void** data;
     //--------------------------------------private functions--------------------------------------
     std::vector<std::string> split(std::string str, char delimiter = ',');
 public:
@@ -37,7 +36,7 @@ public:
      Constructor: takes a filename and a delimiter and reads the contents of the file
      into vectors.
      */
-    Dataframe(std::string filename, bool header = true, std::string delimiter = ",");
+    Dataframe(std::string filename, bool header, char delimiter);
     /*
      getData: provides access to the data vector
      */

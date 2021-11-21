@@ -7,13 +7,13 @@
 
 #include "dataframe.h"
 
-Dataframe::Dataframe(std::string filename, bool header = true, std::string delimiter = ","){
+Dataframe::Dataframe(std::string filename, bool header = true, char delimiter = ','){
     // 1st pass - get number of rows
-    ofstream first_pass;
+    std::ifstream first_pass;
     first_pass.open(filename);
     std::string line;
     int line_count = 0;
-    while (getline(first_pass, line))
+    while (std::getline(first_pass, line))
         line_count++;
 
     // if header then reduce line count by 1
@@ -24,7 +24,7 @@ Dataframe::Dataframe(std::string filename, bool header = true, std::string delim
 
     // second pass - get content of file
     int line_counter = 0;
-    ofstream file;
+    std::ifstream file;
     file.open(filename);
 
     // read contents of the file
@@ -33,19 +33,20 @@ Dataframe::Dataframe(std::string filename, bool header = true, std::string delim
     // put first line into col_names
     if(header){
         // store col names and col count
-        getline(file, line);
+        std::getline(file, line);
         col_names = split(line);
         col_count = col_names.size();
     }
 
     // set up an arrays to store data
-    data = malloc(sizeof(void*) * col_count);
+    data = (void**)malloc(sizeof(void**) * col_count);
 
     // get next line and determine types
-    getline(file, line);
+    std::getline(file, line);
     curr_line = split(line);
     for (int i = 0; i < curr_line.size(); i++) {
         bool is_alpha = false;
+        std::cout << i << ":" << curr_line.size() << std::endl;
         // check every character, if any isalpha then save as string
         for (int j = 0; j < curr_line[i].length(); j++) {
             if (isalpha(curr_line[i][j])) {
@@ -53,38 +54,49 @@ Dataframe::Dataframe(std::string filename, bool header = true, std::string delim
             }
         }
         // if is_alpha is true, make string array else make double
-        if (is_alpha) {
+        if (!is_alpha) {
             double* temp = new double[row_count];
             col_types.push_back("double");
-            temp[0] = curr_line[i];
+            temp[0] = std::stod(curr_line[i]);
             data[i] = &temp;
+            std::cout << &temp << std::endl;
+            delete(temp);
         }
         else {
             std::string* temp = new std::string[row_count];
             col_types.push_back("string");
             temp[0] = curr_line[i];
+            std::cout << &temp << std::endl;
             data[i] = &temp;
+            delete(temp);
         }
     }
     line_counter++;
 
-    while(getline(file, line)){
+    std::cout << ((std::string*)data[0])[4] << std::endl;
+    
+    while(std::getline(file, line)){
         // split line by delimiter
         curr_line = split(line);
         //store values
         for (int k = 0; k < curr_line.size(); k++) {
-            if (col_types[k] == "double")
-                *((double*)data[k])[line_counter] = curr_line[k];
-            else
-                *((std::string*)data[k])[line_counter] = curr_line[k];
-
+            std::cout << curr_line[k] << std::endl;
+            if (col_types[k] == "double") {
+                ((double*)data[k])[line_counter] = std::stod(curr_line[k]);
+            }
+            else {
+                ((std::string*)data[k])[line_counter] = curr_line[k];
+            }
         }
         line_counter++;
     }
+
+    file.close();
+    std::cout << line_counter << std::endl;
     
 }
 
-std::vector<std::string> split(std::string str, char delimiter = ',') {
+std::vector<std::string> Dataframe::split(std::string str, char delimiter) {
     std::vector<std::string> output;
     // make substrs based on delimiter
     int start = 0;

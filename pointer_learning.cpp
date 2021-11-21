@@ -12,7 +12,7 @@ int main() {
 		v.push_back(i);
 	}
 
-	void* arr[4];
+	void** arr = (void**)malloc(sizeof(void*) * 4);
 	char* c = &a;
 	int* i = &zero;
 	string* s = &test;

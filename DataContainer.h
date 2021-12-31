@@ -15,23 +15,22 @@
 
 class DataContainer {
 private:
-    std::vector< std::vector<std::any>> data_container; // contains all the data excluding the headers
-    std::vector< std::string> col_types; // contains the types of all columns
+    std::vector< std::vector<std::any>> data; // contains all the data excluding the headers
     std::vector< std::string> col_names; // contains the name of all columns
 public:
     /**
      * Reads the file specified by the filename
+     *
      * string and loads the character delimited data into a DataContainer
      * @param filename: the name of the file
      * @param delimiter: the delimiter used to separate columns in the file
-     * @param skip_header: set to true if there is no column headers, else false
      *
      * The delimiter is set to comma by default, and skip_header
      * is false by default.
      *
      * Example usage: DataContainer("data.csv")
      */
-    explicit DataContainer(std::string filename, char delimiter = ',', bool skip_header = false);
+    explicit DataContainer(const std::string& filename, const char& delimiter = ',');
 
     /**
      * Displays the top number of rows excluding the header row
@@ -40,7 +39,7 @@ public:
      * Example usage: data_container.display(5);
      * This will display the top 5 rows of the DataContainer called data_container
      */
-    void display(int row_count);
+    void display(int row_count, int display_width = 10);
 
     /**
      * Removes a set number of rows from the DataContainer

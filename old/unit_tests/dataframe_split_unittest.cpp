@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include "dataframe.h"
-#include "util.cpp"
+#include "util.h"
 
 std::vector<std::string> split(std::string str, char delimiter = ',') {
     std::vector<std::string> output;

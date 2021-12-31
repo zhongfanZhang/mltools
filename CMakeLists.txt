@@ -9,4 +9,4 @@ add_executable(mltools
         DataContainer.cpp
         DataContainer.h
         main.cpp
-        util.cpp)
+        util.h)

@@ -4,13 +4,14 @@
 
 #include <iostream>
 #include <any>
+#include <fstream>
+#include <vector>
+#include "DataContainer.h"
 
 
 int main(){
-    std::cout << "Hello World!\n";
-    std::any a = 5;
-    std::cout << std::any_cast<int>(a) << std::endl;
-    a = "fish\n";
-    std::cout << std::any_cast<std::string&>(a) << std::endl;
+    // testing datacontainer stuff
+    DataContainer data_container("test.csv");
+    data_container.display(4);
     return 0;
 }

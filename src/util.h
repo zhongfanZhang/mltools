@@ -1,5 +1,5 @@
-#ifndef UTIL_CPP
-#define UTIL_CPP
+#ifndef UTIL_H
+#define UTIL_H
 
 #include <vector>
 #include <iostream>
@@ -40,4 +40,4 @@ namespace util {
 	}
 }
 
-#endif //UTIL_CPP
+#endif //UTIL_H

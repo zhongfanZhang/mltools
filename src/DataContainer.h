@@ -25,13 +25,14 @@ public:
      * string and loads the character delimited data into a DataContainer
      * @param filename: the name of the file
      * @param delimiter: the delimiter used to separate columns in the file
+     * @param cont_name: the name of the container, set to data_container by default
      *
      * The delimiter is set to comma by default, and skip_header
      * is false by default.
      *
      * Example usage: DataContainer("data.csv")
      */
-    explicit DataContainer(const std::string& filename, std::string  cont_name = "data_container", const char& delimiter = ',');
+    explicit DataContainer(const std::string& filename, std::string cont_name = "data_container", const char& delimiter = ',');
 
     /**
      * Displays the top number of rows excluding the header row
@@ -51,7 +52,6 @@ public:
      * @returns 1: if row removal is successful, but the DataContainer is not empty
      * @returns -1: if the row removal failed due to start_row out of bounds
      * @returns -2: if the row removal failed due to row_count out of bounds
-     * @returns -3: if row removal failed due to both parameters out of bounds
      *
      * If the last row is removed from the DataContainer, the destructor will be
      * called
@@ -69,8 +69,6 @@ public:
       * @returns 0: if no cols exist after the completion
       * @returns 1: if col removal is successful, but DataContainer is not empty
       * @returns -1: if the col removal failed due to start_col out of bounds
-      * @returns -2: if the col removal failed due to col_count out of bounds
-      * @returns -3: if col removal failed due to both parameters out of bounds
       *
       * If the last column is removed from the DataContainer, the destructor will be
       * called

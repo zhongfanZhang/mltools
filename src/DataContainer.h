@@ -17,6 +17,7 @@ class DataContainer {
 private:
     std::vector< std::vector<std::any>> data; // contains all the data excluding the headers
     std::vector< std::string> col_names; // contains the name of all columns
+    const std::string container_name;
 public:
     /**
      * Reads the file specified by the filename
@@ -30,7 +31,7 @@ public:
      *
      * Example usage: DataContainer("data.csv")
      */
-    explicit DataContainer(const std::string& filename, const char& delimiter = ',');
+    explicit DataContainer(const std::string& filename, std::string  cont_name = "data_container", const char& delimiter = ',');
 
     /**
      * Displays the top number of rows excluding the header row
@@ -58,7 +59,7 @@ public:
      * Example usage: data_container.dropRow(0,2);
      * This will remove rows 0 and 1 from the DataContainer called data_container
      */
-    int dropRow(int start_row = 0, int row_count = 1);
+    int dropRow(const int &start_row = 0, const int &row_count = 1);
 
      /**
       * Removes a set number of columns from the DataContainer
@@ -77,7 +78,7 @@ public:
       * Example usage: data_container.dropCol(0);
       * This will drop the first column from the DataContainer called data_container;
       */
-    int dropCol(int start_col = 0, int col_count = 1);
+    int dropCol(const int &start_col = 0);
 
     /**
      * Gets the size of the DataContainer in terms of rows and columns
@@ -91,7 +92,7 @@ public:
      *                data_container.size(false);
      * returns the number of columns of the DataContainer data_container
      */
-     int size(bool rows = true);
+     unsigned int size(bool rows = true);
 
      /**
       * Returns a specified number of rows from the starting index

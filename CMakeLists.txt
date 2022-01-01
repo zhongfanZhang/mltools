@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories(.)
 
 add_executable(mltools
-        DataContainer.cpp
-        DataContainer.h
-        main.cpp
-        util.h)
+        src/DataContainer.cpp
+        src/DataContainer.h
+        src/main.cpp
+        src/util.h)

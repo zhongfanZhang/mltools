@@ -111,7 +111,7 @@ public:
       * Example Usage: data_container.getCol(0);
       * Gets the first column of the DataContainer
       */
-     std::vector<double> getCol(int index);
+     std::vector<double> getCol(const int &index);
 
      /**
       * Tallys the unique values of a column

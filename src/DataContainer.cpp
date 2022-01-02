@@ -98,12 +98,14 @@ unsigned int DataContainer::size(bool rows) {
 }
 
 std::vector<std::vector<double>> DataContainer::getRows(const int &start_index, const int &row_count) {
+    // if out of range
+    if(start_index + row_count >= data.size())
+        throw std::out_of_range("Requested row is out of range");
     std::vector< std::vector<double>> output;
     // any_cast data elements into double
     for(auto i = start_index; i < row_count; i++){
         std::vector<double> temp;
         for(auto &element : data[i]){
-            std::cout << element.type().name() << " ";
             try{
                 temp.emplace_back(std::any_cast<double>(element));
             }
@@ -117,8 +119,22 @@ std::vector<std::vector<double>> DataContainer::getRows(const int &start_index, 
     return output;
 }
 
-std::vector<double> DataContainer::getCol(int index) {
-    return std::vector<double>();
+std::vector<double> DataContainer::getCol(const int &index) {
+    // if out of range
+    if(index >= data[0].size())
+        throw std::out_of_range("Requested column is out of range");
+    std::vector<double> output;
+    // any cast data into double
+    for(auto &row : data){
+        try{
+            output.emplace_back(std::any_cast<double>(row[index]));
+        }
+        // if bad any_cast, break to skip current row
+        catch(std::bad_any_cast &e){
+            break;
+        }
+    }
+    return output;
 }
 
 std::map<std::string, int> DataContainer::unique(int col_index) {

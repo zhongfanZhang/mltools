@@ -27,6 +27,10 @@ int main(){
         std::cout << "\n";
     }
     std::cout << "\n";
-
+    std::vector<double> test_col = fish.getCol(0);
+    for(auto &element : test_col){
+        std::cout << element << "\n";
+    }
+    std::cout << "\n";
     return 0;
 }

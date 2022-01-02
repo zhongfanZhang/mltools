@@ -100,7 +100,7 @@ public:
       * Example Usage: data_container.getRows(1,1);
       * Gets 1 row starting from the second row.
       */
-     std::vector< std::vector<double>> getRows(int start_index, int row_count = 1);
+     std::vector< std::vector<double>> getRows(const int &start_index, const int &row_count = 1);
 
      /**
       * Gets the column specified by the index

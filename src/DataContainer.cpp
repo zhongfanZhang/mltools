@@ -5,10 +5,9 @@
 #include "DataContainer.h"
 #include <fstream>
 #include <iostream>
-#include "util.h"
+#include "ml_util.h"
 #include <string>
 #include <iomanip>
-#include <utility>
 
 
 DataContainer::DataContainer(const std::string& filename, std::string  cont_name, const char& delimiter)
@@ -21,11 +20,11 @@ DataContainer::DataContainer(const std::string& filename, std::string  cont_name
     // read the first line as column names
     std::string curr_line;
     std::getline(file, curr_line);
-    col_names = util::split(curr_line, delimiter);
+    col_names = ml_util::split(curr_line, delimiter);
     // read the rest of the lines into data
     while(!file.eof()){
         std::getline(file, curr_line);
-        std::vector<std::string> temp_line = util::split(curr_line, delimiter);
+        std::vector<std::string> temp_line = ml_util::split(curr_line, delimiter);
         std::vector<std::any> temp_data;
         // convert any convertible values into doubles else keep as string
         for(auto &element : temp_line){
@@ -98,8 +97,24 @@ unsigned int DataContainer::size(bool rows) {
         return data[0].size();
 }
 
-std::vector<std::vector<double>> DataContainer::getRows(int start_index, int row_count) {
-    return std::vector<std::vector<double>>();
+std::vector<std::vector<double>> DataContainer::getRows(const int &start_index, const int &row_count) {
+    std::vector< std::vector<double>> output;
+    // any_cast data elements into double
+    for(auto i = start_index; i < row_count; i++){
+        std::vector<double> temp;
+        for(auto &element : data[i]){
+            std::cout << element.type().name() << " ";
+            try{
+                temp.emplace_back(std::any_cast<double>(element));
+            }
+            // if bad any-cast, break to skip current row
+            catch(std::bad_any_cast &e){
+                break;
+            }
+        }
+        output.emplace_back(temp);
+    }
+    return output;
 }
 
 std::vector<double> DataContainer::getCol(int index) {

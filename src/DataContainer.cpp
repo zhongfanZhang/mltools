@@ -140,6 +140,12 @@ std::vector<double> DataContainer::getCol(const int &index) {
     return output;
 }
 
+/*
+ * TODO: change key index to template so unique can work with string columns as well
+ * this will involve changing getCol to template as well based on the stored type id
+ * in the data vector
+ * TODO: optimise unique by deleting all occurrences of counted elements
+ */
 std::map<double, int> DataContainer::unique(const int &col_index) {
     std::map<double, int> output;
     // get the column
@@ -155,3 +161,7 @@ std::map<double, int> DataContainer::unique(const int &col_index) {
     return output;
 }
 
+template<typename T>
+void DataContainer::addCol(const std::string &col_name, const std::vector<T> &input_data) {
+
+}

@@ -114,7 +114,7 @@ public:
      std::vector<double> getCol(const int &index);
 
      /**
-      * Tallys the unique values of a column
+      * Tallies the unique values of a column
       *
       * @param col_index: the index of the column to be tallied
       * @return a key-value pair of values and their counts in the particular column
@@ -123,6 +123,17 @@ public:
       * This should return a map of all unique values in the second column of data_container
       */
      std::map<double, int> unique(const int &col_index);
+
+     /**
+      * Adds a single 1 dimensional vector as a column to the DataContainer,
+      * the size of the input column must be same
+      * as the size of the columns of the DataContainer
+      *
+      * @param col_name: name of the new column
+      * @param input_data: Data in the form of a 1d vector
+      */
+     template<typename T>
+     void addCol(const std::string &col_name, const std::vector<T> &input_data);
 
 };
 

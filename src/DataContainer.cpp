@@ -8,6 +8,7 @@
 #include "ml_util.h"
 #include <string>
 #include <iomanip>
+#include <algorithm>
 
 
 DataContainer::DataContainer(const std::string& filename, std::string  cont_name, const char& delimiter)
@@ -24,6 +25,8 @@ DataContainer::DataContainer(const std::string& filename, std::string  cont_name
     // read the rest of the lines into data
     while(!file.eof()){
         std::getline(file, curr_line);
+        // if line is empty, goto next line
+        if(curr_line.empty()) continue;
         std::vector<std::string> temp_line = ml_util::split(curr_line, delimiter);
         std::vector<std::any> temp_data;
         // convert any convertible values into doubles else keep as string
@@ -137,7 +140,18 @@ std::vector<double> DataContainer::getCol(const int &index) {
     return output;
 }
 
-std::map<std::string, int> DataContainer::unique(int col_index) {
-    return std::map<std::string, int>();
+std::map<double, int> DataContainer::unique(const int &col_index) {
+    std::map<double, int> output;
+    // get the column
+    std::vector<double> col = getCol(col_index);
+    // tally unique counts
+    for(auto &element : col){
+        // get key and tally
+        long long tally = std::count(col.begin(), col.end(), element);
+        // add key and tally to output
+        output.insert(std::pair<double, double>(element, tally));
+        // remove all occurrences of tallied element - optimisations possible
+    }
+    return output;
 }
 

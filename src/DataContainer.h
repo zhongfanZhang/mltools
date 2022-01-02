@@ -122,7 +122,7 @@ public:
       * Example Usage: data_container.unique(1);
       * This should return a map of all unique values in the second column of data_container
       */
-     std::map<std::string, int> unique(int col_index);
+     std::map<double, int> unique(const int &col_index);
 
 };
 

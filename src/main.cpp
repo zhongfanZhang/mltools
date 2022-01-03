@@ -7,6 +7,12 @@
 #include <chrono>
 #define GET_VAR_NAME(x) (#x)
 
+//TODO: cleanup function names - either use camelcase or underscore
+//TODO: implement DecisionTreeClassifier
+//TODO: implement one_hot_encoding
+//TODO: implement addRows
+//TODO: implement train_test_split
+
 int main(){
     auto start = std::chrono::high_resolution_clock::now();
     // testing datacontainer stuff
@@ -39,7 +45,7 @@ int main(){
 //    }
 //    std::cout << "\n";
     // unique test
-    std::map<double, int> uniques = fish.unique<double>(2);
+    std::map<double, int> uniques = fish.unique<double>(1);
     for(auto it = uniques.begin(); it != uniques.end(); ++it){
         std::cout << it -> first << ":" << it -> second << "\n";
     }

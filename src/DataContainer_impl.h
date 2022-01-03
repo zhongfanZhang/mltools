@@ -28,9 +28,6 @@ std::vector<T> DataContainer::getCol(const int &index) {
     return output;
 }
 
-/*
- * TODO: optimise unique by deleting all occurrences of counted elements
- */
 template<typename T>
 std::map<T, int> DataContainer::unique(const int &col_index) {
     std::map<T, int> output;

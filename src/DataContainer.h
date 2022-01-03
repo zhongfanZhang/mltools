@@ -35,6 +35,15 @@ public:
     explicit DataContainer(const std::string& filename, std::string cont_name = "data_container", const char& delimiter = ',');
 
     /**
+     * Creates a DataContainer object with 3 vectors
+     *
+     * @param in_data: Data in the form of a vector of a vector of anys
+     * @param in_col_name: column names of the data table
+     * @param in_cont_name: a name for the instance of DataContainer
+     */
+    DataContainer(std::vector< std::vector<std::any>> in_data, std::vector< std::string> in_col_name, std::string in_cont_name);
+
+    /**
      * Displays the top number of rows excluding the header row
      * @param row_count: the number of rows to be displayed
      *
@@ -136,6 +145,14 @@ public:
       */
      template<typename T>
      void addCol(const std::string &col_name, const std::vector<T> &input_data);
+
+     /**
+      * Creates a new data_container that will contain the test data
+      * @param train: the proportion desired for the training data (0-1)
+      * @param test : the proportion desired for the testing data (0-1)
+      * @return a DataContainer object with the test data
+      */
+     DataContainer train_test_split(const float &train, const float &test);
 
 };
 

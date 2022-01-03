@@ -9,6 +9,7 @@
 #include <string>
 #include <iomanip>
 #include <algorithm>
+#include <utility>
 
 
 DataContainer::DataContainer(const std::string& filename, std::string  cont_name, const char& delimiter)
@@ -43,6 +44,13 @@ DataContainer::DataContainer(const std::string& filename, std::string  cont_name
     // clean up
     file.close();
 }
+
+DataContainer::DataContainer(std::vector< std::vector<std::any>>  in_data,
+                             std::vector< std::string>  in_col_names,
+                             std::string in_container_name)
+                             : container_name(std::move(in_container_name)),
+                             data(std::move(in_data)),
+                             col_names(std::move(in_col_names)) {}
 
 void DataContainer::display(int row_count, int display_width) {
     // info dump
@@ -120,4 +128,8 @@ std::vector<std::vector<double>> DataContainer::getRows(const int &start_index, 
         output.emplace_back(temp);
     }
     return output;
+}
+
+DataContainer DataContainer::train_test_split(const float &train, const float &test) {
+
 }

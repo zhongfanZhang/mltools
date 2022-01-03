@@ -37,12 +37,14 @@ std::map<T, int> DataContainer::unique(const int &col_index) {
     // get the column
     std::vector<T> col = getCol<T>(col_index);
     // tally unique counts
-    for(auto &element : col){
-        // get key and tally
-        long long tally = std::count(col.begin(), col.end(), element);
-        // add key and tally to output
-        output.insert(std::pair<T, double>(element, tally));
-        // remove all occurrences of tallied element - optimisations possible
+    while(!col.empty()){
+        // get first value
+        T val = col[0];
+        // make tally and insert with key
+        long long tally = std::count(col.begin(), col.end(), val);
+        output.insert(std::pair<T, int>(val, tally));
+        // erase all occurrences of tallied value
+        col.erase(std::remove(col.begin(),col.end(),val), col.end());
     }
     return output;
 }

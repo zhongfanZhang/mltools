@@ -39,7 +39,7 @@ int main(){
 //    }
 //    std::cout << "\n";
     // unique test
-    std::map<std::string, int> uniques = fish.unique<std::string>(5);
+    std::map<double, int> uniques = fish.unique<double>(2);
     for(auto it = uniques.begin(); it != uniques.end(); ++it){
         std::cout << it -> first << ":" << it -> second << "\n";
     }
@@ -47,5 +47,6 @@ int main(){
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
     double dur = double(duration.count()) / 1000000;
     std::cout << "time elapsed: " <<  dur << "s\n";
+
     return 0;
 }

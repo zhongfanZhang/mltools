@@ -33,13 +33,13 @@ int main(){
     }
     std::cout << "\n";
     // getCol test
-    std::vector<double> test_col = fish.getCol(0);
+    std::vector<double> test_col = fish.getCol<double>(0);
 //    for(auto &element : test_col){
 //        std::cout << element << "\n";
 //    }
 //    std::cout << "\n";
     // unique test
-    std::map<std::string, int> uniques = fish.unique(1);
+    std::map<std::string, int> uniques = fish.unique<std::string>(5);
     for(auto it = uniques.begin(); it != uniques.end(); ++it){
         std::cout << it -> first << ":" << it -> second << "\n";
     }

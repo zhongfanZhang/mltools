@@ -111,7 +111,8 @@ public:
       * Example Usage: data_container.getCol(0);
       * Gets the first column of the DataContainer
       */
-     std::vector<double> getCol(const int &index);
+     template<typename T>
+     std::vector<T> getCol(const int &index);
 
      /**
       * Tallies the unique values of a column
@@ -122,7 +123,8 @@ public:
       * Example Usage: data_container.unique(1);
       * This should return a map of all unique values in the second column of data_container
       */
-     std::map<double, int> unique(const int &col_index);
+      template<typename T>
+     std::map<T, int> unique(const int &col_index);
 
      /**
       * Adds a single 1 dimensional vector as a column to the DataContainer,
@@ -137,7 +139,7 @@ public:
 
 };
 
-
+#include "DataContainer_impl.h"
 #endif //MLTOOLS_DATACONTAINER_H
 
 

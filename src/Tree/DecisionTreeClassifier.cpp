@@ -3,3 +3,13 @@
 //
 
 #include "DecisionTreeClassifier.h"
+
+DecisionTreeClassifier::DecisionTreeClassifier() {
+
+}
+
+void DecisionTreeClassifier::fit(const DataContainer &data) {
+
+}
+
+

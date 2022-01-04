@@ -11,13 +11,16 @@
 #include <vector>
 #include <string>
 #include <map>
+#include "ml_util.h"
 
 
 class DataContainer {
 private:
     std::vector< std::vector<std::any>> data; // contains all the data excluding the headers
+
     std::vector< std::string> col_names; // contains the name of all columns
     const std::string container_name;
+
 public:
     /**
      * Reads the file specified by the filename
@@ -121,7 +124,7 @@ public:
       * Gets the first column of the DataContainer
       */
      template<typename T>
-     std::vector<T> getCol(const int &index);
+     std::vector<T> getCol(const int &index, bool del = false);
 
      /**
       * Tallies the unique values of a column
@@ -153,6 +156,32 @@ public:
       * @return a DataContainer object with the test data
       */
      DataContainer train_test_split(const float &train, const float &test);
+
+     /**
+      * Overloads the [] operator for filtering purposes
+      *
+      * @tparam T: the type of the column
+      * @param condition: a string containing a valid column name, a comparison operator and a number
+      * @return all rows for which the condition is true in a 2d vector
+      */
+     std::vector< std::vector<double>> operator[](const std::string &condition);
+
+    /**
+    * Performs one hot encoding on the column of a DataContainer specified by
+    * col_index, creating a number of new columns based on the unique value
+    * count and removing the old column
+    *
+    * @param col_index: the column to be encoded
+    */
+    void oneHotEncoding(const int &col_index, bool remove_old = true);
+
+    /**
+     * Returns the index of a column given the name of the column
+     *
+     * @param col_name: the name of the column : std::string
+     * @return the index of the column : int
+     */
+    int getColIndex(const std::string &col_name);
 
 };
 

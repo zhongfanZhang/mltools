@@ -5,7 +5,6 @@
 #include "DataContainer.h"
 #include <fstream>
 #include <iostream>
-#include "ml_util.h"
 #include <string>
 #include <iomanip>
 #include <algorithm>
@@ -51,6 +50,7 @@ DataContainer::DataContainer(std::vector< std::vector<std::any>>  in_data,
                              : container_name(std::move(in_container_name)),
                              data(std::move(in_data)),
                              col_names(std::move(in_col_names)) {}
+
 
 void DataContainer::display(int row_count, int display_width) {
     // info dump
@@ -101,6 +101,10 @@ int DataContainer::dropCol(const int &start_col) {
     else return 1;
 }
 
+DataContainer DataContainer::train_test_split(const float &train, const float &test) {
+
+}
+
 unsigned int DataContainer::size(bool rows) {
     if(rows)
         return data.size();
@@ -130,6 +134,69 @@ std::vector<std::vector<double>> DataContainer::getRows(const int &start_index, 
     return output;
 }
 
-DataContainer DataContainer::train_test_split(const float &train, const float &test) {
-
+void DataContainer::oneHotEncoding(const int &col_index, bool remove_old) {
+    // get key-value pair of unique values
+    std::map<std::string, int> value_counts = unique<std::string>(col_index);
+    // get new col names
+    std::vector<std::string> new_col_names;
+    for(auto &item : value_counts){
+        new_col_names.emplace_back(item.first);
+    }
+    // create new encoded vectors
+    std::vector< std::vector<double>> encoded_cols;
+    for(auto &col_name : new_col_names) {
+        std::vector<double> temp_encoded_col;
+        for (auto &row: data) {
+            auto value = std::any_cast<std::string>(row[col_index]);
+            if (value == col_name)
+                temp_encoded_col.emplace_back(1);
+            else
+                temp_encoded_col.emplace_back(0);
+        }
+        encoded_cols.emplace_back(temp_encoded_col);
+    }
+    // add new_col_names to col_names
+    for(int i = 0; i < encoded_cols.size(); i++){
+        addCol(new_col_names[i], encoded_cols[i]);
+    }
+    // remove old col if remove_old is true
+    if(remove_old){
+        dropCol(col_index);
+    }
 }
+
+std::vector<std::vector<double>> DataContainer::operator[](const std::string &condition) {
+    std::vector< std::vector<double>> output;
+    // parse condition
+    std::string col_name;
+    std::string op;
+    double cond;
+    auto cond_line = ml_util::split(condition, ' ');
+    col_name = cond_line[0];
+    op = cond_line[1];
+    cond = std::stod(cond_line[2]);
+    // get index of the column
+    int col_index = getColIndex(col_name);
+    // filter DataContainer
+    for(auto &row : data){
+        // TODO: apply conditions
+
+    }
+    return output;
+}
+
+int DataContainer::getColIndex(const std::string &col_name) {
+    auto ip = find(col_names.begin(), col_names.end(), col_name);
+    // if the name was found
+    if(ip != col_names.end())
+        return ip - col_names.begin();
+}
+
+/**
+ * less than
+ * less than or eq
+ * greater than
+ * greater than or eq
+ * equals
+ * not equal to
+ */

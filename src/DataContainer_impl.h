@@ -8,9 +8,10 @@
 #include <stdexcept>
 #include <algorithm>
 #include "DataContainer.h"
+#include "ml_util.h"
 
 template <typename T>
-std::vector<T> DataContainer::getCol(const int &index) {
+std::vector<T> DataContainer::getCol(const int &index, bool del) {
     // if out of range
     if(index >= data[0].size())
         throw std::out_of_range("Requested column is out of range");
@@ -25,6 +26,10 @@ std::vector<T> DataContainer::getCol(const int &index) {
             break;
         }
     }
+    // delete col if specified
+    if(del)
+        dropCol(index);
+    // return column stored in output
     return output;
 }
 
@@ -48,6 +53,10 @@ std::map<T, int> DataContainer::unique(const int &col_index) {
 
 template<typename T>
 void DataContainer::addCol(const std::string &col_name, const std::vector<T> &input_data) {
-
+    col_names.template emplace_back(col_name);
+    for(int i = 0; i < data.size(); i++){
+        data[i].template emplace_back(input_data[i]);
+    }
 }
+
 #endif //MLTOOLS_DATACONTAINER_IMPL_H

@@ -10,4 +10,10 @@ add_executable(mltools
         src/DataContainer.h
         src/main.cpp
         src/ml_util.h
-        src/ml_util.cpp src/DataContainer_impl.h src/Tree/DecisionTreeClassifier.cpp src/Tree/DecisionTreeClassifier.h src/Tree/DecisionTree.cpp src/Tree/DecisionTree.h src/Tree/DecisionTreeNode.h)
+        src/ml_util.cpp
+        src/DataContainer_impl.h
+        src/Tree/DecisionTreeClassifier.cpp
+        src/Tree/DecisionTreeClassifier.h
+        src/Tree/DecisionTree.cpp
+        src/Tree/DecisionTree.h
+        src/Tree/DecisionTreeNode.h)

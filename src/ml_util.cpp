@@ -47,5 +47,3 @@ std::vector<std::string> ml_util::split(std::string str, const char& delimiter) 
     }
     return output;
 }
-
-void ml_util::oneHotEncoding(const int &col_index, DataContainer &data_container) {}

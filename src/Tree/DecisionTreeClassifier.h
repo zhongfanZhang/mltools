@@ -7,10 +7,15 @@
 
 
 #include "DecisionTree.h"
+#include "src/DataContainer.h"
 
 class DecisionTreeClassifier {
 private:
     DecisionTree tree;
+public:
+    DecisionTreeClassifier();
+
+    void fit(const DataContainer &data);
 };
 
 

@@ -5,8 +5,8 @@
 #include "DataContainer.h"
 #include "ml_util.h"
 #include <chrono>
-#define GET_VAR_NAME(x) (#x)
 
+//TODO: implement ml_util::filter
 //TODO: implement DecisionTreeClassifier
 
 int main(){
@@ -30,5 +30,19 @@ int main(){
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     std::cout << double (duration.count()) / 1000000 << "s\n";
+
+
+    // test with maps, arrays, and vectors
+    int* a = new int[10];
+    for(int i = 0; i < 10; i++){
+        a[i] = i * 2;
+    }
+    std::map<std::string, int*> t;
+    t.insert(std::pair<std::string, int*>{"fish", a});
+    for(int i = 0; i < 10; i++){
+        std::cout << t["fish"][i] << " ";
+    }
+    std::cout << '\n';
+
     return 0;
 }

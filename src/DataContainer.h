@@ -112,6 +112,7 @@ public:
       * Example Usage: data_container.get_rows(1,1);
       * Gets 1 row starting from the second row.
       */
+     [[deprecated("Replaced with train_test_split, which outputs the data after splitting it")]]
      std::vector< std::vector<double>> get_rows(const int &start_index, const int &row_count = 1);
 
      /**

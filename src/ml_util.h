@@ -23,6 +23,12 @@ namespace ml_util {
 
 	std::vector<std::string> split(std::string str, const char& delimiter = ',');
 
+    /*
+     * data wrangling functions
+     */
+
+    std::vector<std::vector<double>> filter(std::string condition, std::vector< std::vector<double>> data);
+
 }
 
 #endif //ML_UTIL_H

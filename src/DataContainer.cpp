@@ -75,7 +75,7 @@ void DataContainer::display(int row_count, int display_width) {
     }
 }
 
-int DataContainer::dropRow(const int &start_row, const int &row_count) {
+int DataContainer::drop_row(const int &start_row, const int &row_count) {
     // if start out of range
     if(start_row >= data.size()) return -1;
     // if end of out range
@@ -87,7 +87,7 @@ int DataContainer::dropRow(const int &start_row, const int &row_count) {
     else return 1;
 }
 
-int DataContainer::dropCol(const int &start_col) {
+int DataContainer::drop_col(const int &start_col) {
     // remove the column header
     col_names.erase(col_names.begin() + start_col);
     // remove element col_num from every row
@@ -132,7 +132,7 @@ unsigned int DataContainer::size(bool rows) {
         return data[0].size();
 }
 
-std::vector<std::vector<double>> DataContainer::getRows(const int &start_index, const int &row_count) {
+std::vector<std::vector<double>> DataContainer::get_rows(const int &start_index, const int &row_count) {
     // if out of range
     if(start_index + row_count >= data.size())
         throw std::out_of_range("Requested row is out of range");
@@ -154,7 +154,7 @@ std::vector<std::vector<double>> DataContainer::getRows(const int &start_index, 
     return output;
 }
 
-void DataContainer::oneHotEncoding(const int &col_index, bool remove_old) {
+void DataContainer::one_hot_encoding(const int &col_index, bool remove_old) {
     // get key-value pair of unique values
     std::map<std::string, int> value_counts = unique<std::string>(col_index);
     // get new col names and resize vector
@@ -180,11 +180,11 @@ void DataContainer::oneHotEncoding(const int &col_index, bool remove_old) {
     }
     // add new_col_names to col_names
     for(int i = 0; i < encoded_cols.size(); i++){
-        addCol(new_col_names[i], encoded_cols[i]);
+        add_col(new_col_names[i], encoded_cols[i]);
     }
     // remove old col if remove_old is true
     if(remove_old){
-        dropCol(col_index);
+        drop_col(col_index);
     }
 }
 
@@ -199,7 +199,7 @@ std::vector<std::vector<double>> DataContainer::operator[](const std::string &co
     op = cond_line[1];
     cond = std::stod(cond_line[2]);
     // get index of the column
-    int col_index = getColIndex(col_name);
+    int col_index = get_col_index(col_name);
     // filter DataContainer
     for(auto &row : data){
         // TODO: apply conditions
@@ -208,7 +208,7 @@ std::vector<std::vector<double>> DataContainer::operator[](const std::string &co
     return output;
 }
 
-int DataContainer::getColIndex(const std::string &col_name) {
+int DataContainer::get_col_index(const std::string &col_name) {
     auto ip = find(col_names.begin(), col_names.end(), col_name);
     // if the name was found
     if(ip != col_names.end())

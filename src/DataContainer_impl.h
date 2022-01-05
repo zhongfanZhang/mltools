@@ -11,7 +11,7 @@
 #include "ml_util.h"
 
 template <typename T>
-std::vector<T> DataContainer::getCol(const int &index, bool del) {
+std::vector<T> DataContainer::get_col(const int &index, bool del) {
     // if out of range
     if(index >= data[0].size())
         throw std::out_of_range("Requested column is out of range");
@@ -28,7 +28,7 @@ std::vector<T> DataContainer::getCol(const int &index, bool del) {
     }
     // delete col if specified
     if(del)
-        dropCol(index);
+        drop_col(index);
     // return column stored in output
     return output;
 }
@@ -37,7 +37,7 @@ template<typename T>
 std::map<T, int> DataContainer::unique(const int &col_index) {
     std::map<T, int> output;
     // get the column
-    std::vector<T> col = getCol<T>(col_index);
+    std::vector<T> col = get_col<T>(col_index);
     // tally unique counts
     while(!col.empty()){
         // get first value
@@ -52,7 +52,7 @@ std::map<T, int> DataContainer::unique(const int &col_index) {
 }
 
 template<typename T>
-void DataContainer::addCol(const std::string &col_name, const std::vector<T> &input_data) {
+void DataContainer::add_col(const std::string &col_name, const std::vector<T> &input_data) {
     if(input_data.size() != data.size()) throw std::range_error("The length of the input data and the existing database does not match.");
     col_names.template emplace_back(col_name);
     for(int i = 0; i < data.size(); i++){

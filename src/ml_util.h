@@ -12,10 +12,10 @@ namespace ml_util {
      */
 
 	template<typename T>
-	void printVec1d(std::vector<T> vec, bool verbose = false, int col_width = 10);
+	void print_vec_1d(std::vector<T> vec, bool verbose = false, int col_width = 10);
 
     template<typename T>
-    void printVec2d(std::vector< std::vector<T>> vec, int col_width = 10);
+    void print_vec_2d(std::vector< std::vector<T>> vec, int col_width = 10);
 
     /*
      * String processing functions

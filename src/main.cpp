@@ -7,9 +7,7 @@
 #include <chrono>
 #define GET_VAR_NAME(x) (#x)
 
-//TODO: cleanup function names - either use camelcase or underscore
 //TODO: implement DecisionTreeClassifier
-//TODO: implement train_test_split
 
 int main(){
     auto start = std::chrono::high_resolution_clock::now();
@@ -17,14 +15,14 @@ int main(){
     data.display(4);
     std::vector<double> test{1,2,3,4};
     try{
-        data.addCol("test5",test);
-        data.addCol("test6",test);
+        data.add_col("test5", test);
+        data.add_col("test6", test);
     }
     catch(std::range_error &e){
         std::cout << e.what() << '\n';
     }
     data.display(4);
-    data.oneHotEncoding(6);
+    data.one_hot_encoding(6);
     data.display(4, 8);
     auto out = data.train_test_split(0.8, 0.2);
     std::cout << "Train set size: " << out.first.size() << '\n';

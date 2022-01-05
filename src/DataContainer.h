@@ -68,10 +68,10 @@ public:
      * If the last row is removed from the DataContainer, the destructor will be
      * called
      *
-     * Example usage: data_container.dropRow(0,2);
+     * Example usage: data_container.drop_row(0,2);
      * This will remove rows 0 and 1 from the DataContainer called data_container
      */
-    int dropRow(const int &start_row = 0, const int &row_count = 1);
+    int drop_row(const int &start_row = 0, const int &row_count = 1);
 
      /**
       * Removes a set number of columns from the DataContainer
@@ -85,10 +85,10 @@ public:
       * If the last column is removed from the DataContainer, the destructor will be
       * called
       *
-      * Example usage: data_container.dropCol(0);
+      * Example usage: data_container.drop_col(0);
       * This will drop the first column from the DataContainer called data_container;
       */
-    int dropCol(const int &start_col = 0);
+    int drop_col(const int &start_col = 0);
 
     /**
      * Gets the size of the DataContainer in terms of rows and columns
@@ -109,10 +109,10 @@ public:
       * @param row_count: the number of rows to be returned, set to 1 by default
       * @return a specified number of rows in a 2D vector
       *
-      * Example Usage: data_container.getRows(1,1);
+      * Example Usage: data_container.get_rows(1,1);
       * Gets 1 row starting from the second row.
       */
-     std::vector< std::vector<double>> getRows(const int &start_index, const int &row_count = 1);
+     std::vector< std::vector<double>> get_rows(const int &start_index, const int &row_count = 1);
 
      /**
       * Gets the column specified by the index
@@ -120,11 +120,11 @@ public:
       * @param index: the index of the column to be returned
       * @return the column at the index in the form of a std::vector
       *
-      * Example Usage: data_container.getCol(0);
+      * Example Usage: data_container.get_col(0);
       * Gets the first column of the DataContainer
       */
      template<typename T>
-     std::vector<T> getCol(const int &index, bool del = false);
+     std::vector<T> get_col(const int &index, bool del = false);
 
      /**
       * Tallies the unique values of a column
@@ -147,7 +147,7 @@ public:
       * @param input_data: Data in the form of a 1d vector
       */
      template<typename T>
-     void addCol(const std::string &col_name, const std::vector<T> &input_data);
+     void add_col(const std::string &col_name, const std::vector<T> &input_data);
 
      /**
       * Creates a new data_container that will contain the test data
@@ -174,7 +174,7 @@ public:
     *
     * @param col_index: the column to be encoded
     */
-    void oneHotEncoding(const int &col_index, bool remove_old = true);
+    void one_hot_encoding(const int &col_index, bool remove_old = true);
 
     /**
      * Returns the index of a column given the name of the column
@@ -182,7 +182,7 @@ public:
      * @param col_name: the name of the column : std::string
      * @return the index of the column : int
      */
-    int getColIndex(const std::string &col_name);
+    int get_col_index(const std::string &col_name);
 
 };
 

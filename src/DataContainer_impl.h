@@ -53,6 +53,7 @@ std::map<T, int> DataContainer::unique(const int &col_index) {
 
 template<typename T>
 void DataContainer::addCol(const std::string &col_name, const std::vector<T> &input_data) {
+    if(input_data.size() != data.size()) throw std::range_error("The length of the input data and the existing database does not match.");
     col_names.template emplace_back(col_name);
     for(int i = 0; i < data.size(); i++){
         data[i].template emplace_back(input_data[i]);

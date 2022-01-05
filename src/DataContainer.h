@@ -155,7 +155,8 @@ public:
       * @param test : the proportion desired for the testing data (0-1)
       * @return a DataContainer object with the test data
       */
-     DataContainer train_test_split(const float &train, const float &test);
+     std::pair<std::vector< std::vector<double>>, std::vector< std::vector<double>>>
+     train_test_split(const float &train, const float &test);
 
      /**
       * Overloads the [] operator for filtering purposes

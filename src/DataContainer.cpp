@@ -101,8 +101,28 @@ int DataContainer::dropCol(const int &start_col) {
     else return 1;
 }
 
-DataContainer DataContainer::train_test_split(const float &train, const float &test) {
-
+std::pair<std::vector< std::vector<double>>, std::vector< std::vector<double>>>
+        DataContainer::train_test_split(const float &train, const float &test) {
+    // initialise output vectors and random seed
+    std::vector< std::vector<double>> train_set, test_set;
+    srand(time(NULL));
+    // multiply test_proportion by 100 and roll random numbers every row to decide set
+    int test_proportion = test * 100;
+    for(auto &row : data){
+        int roll = rand()% 100 + 0;
+        std::vector<double> temp_row;
+        // cast row from any to double
+        temp_row.reserve(row.size());
+        for(auto &element : row){
+            temp_row.emplace_back(std::any_cast<double>(element));
+        }
+        // insert row according to the roll
+        if(roll <= test_proportion)
+            test_set.push_back(temp_row);
+        else
+            train_set.push_back(temp_row);
+    }
+    return {train_set, test_set};
 }
 
 unsigned int DataContainer::size(bool rows) {
@@ -137,23 +157,26 @@ std::vector<std::vector<double>> DataContainer::getRows(const int &start_index, 
 void DataContainer::oneHotEncoding(const int &col_index, bool remove_old) {
     // get key-value pair of unique values
     std::map<std::string, int> value_counts = unique<std::string>(col_index);
-    // get new col names
+    // get new col names and resize vector
     std::vector<std::string> new_col_names;
+    new_col_names.reserve(value_counts.size());
+    // add keys to new_col_names vector
     for(auto &item : value_counts){
-        new_col_names.emplace_back(item.first);
+        new_col_names.push_back(item.first);
     }
     // create new encoded vectors
     std::vector< std::vector<double>> encoded_cols;
     for(auto &col_name : new_col_names) {
         std::vector<double> temp_encoded_col;
+        temp_encoded_col.reserve(data.size());
         for (auto &row: data) {
             auto value = std::any_cast<std::string>(row[col_index]);
             if (value == col_name)
-                temp_encoded_col.emplace_back(1);
+                temp_encoded_col.push_back(1);
             else
-                temp_encoded_col.emplace_back(0);
+                temp_encoded_col.push_back(0);
         }
-        encoded_cols.emplace_back(temp_encoded_col);
+        encoded_cols.push_back(temp_encoded_col);
     }
     // add new_col_names to col_names
     for(int i = 0; i < encoded_cols.size(); i++){

@@ -47,7 +47,3 @@ std::vector<std::string> ml_util::split(std::string str, const char& delimiter) 
     }
     return output;
 }
-
-std::vector<std::vector<double>> ml_util::filter(std::string condition, std::vector<std::vector<double>> data) {
-    return std::vector<std::vector<double>>();
-}

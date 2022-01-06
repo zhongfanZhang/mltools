@@ -27,8 +27,6 @@ namespace ml_util {
      * data wrangling functions
      */
 
-    std::vector<std::vector<double>> filter(std::string condition, std::vector< std::vector<double>> data);
-
 }
 
 #endif //ML_UTIL_H

@@ -101,13 +101,11 @@ int DataContainer::drop_col(const int &start_col) {
     else return 1;
 }
 
-std::pair<std::vector< std::vector<double>>, std::vector< std::vector<double>>>
-        DataContainer::train_test_split(const float &train, const float &test) {
-    // initialise output vectors and random seed
-    std::vector< std::vector<double>> train_set, test_set;
+void DataContainer::train_test_split(const float &test_ratio) {
+    // initialise random seed
     srand(time(NULL));
     // multiply test_proportion by 100 and roll random numbers every row to decide set
-    int test_proportion = test * 100;
+    int test_proportion = test_ratio * 100;
     for(auto &row : data){
         int roll = rand()% 100 + 0;
         std::vector<double> temp_row;
@@ -118,11 +116,10 @@ std::pair<std::vector< std::vector<double>>, std::vector< std::vector<double>>>
         }
         // insert row according to the roll
         if(roll <= test_proportion)
-            test_set.push_back(temp_row);
+            test.push_back(temp_row);
         else
-            train_set.push_back(temp_row);
+            train.push_back(temp_row);
     }
-    return {train_set, test_set};
 }
 
 unsigned int DataContainer::size(bool rows) {
@@ -188,38 +185,38 @@ void DataContainer::one_hot_encoding(const int &col_index, bool remove_old) {
     }
 }
 
-std::vector<std::vector<double>> DataContainer::operator[](const std::string &condition) {
-    std::vector< std::vector<double>> output;
-    // parse condition
-    std::string col_name;
-    std::string op;
-    double cond;
-    auto cond_line = ml_util::split(condition, ' ');
-    col_name = cond_line[0];
-    op = cond_line[1];
-    cond = std::stod(cond_line[2]);
-    // get index of the column
-    int col_index = get_col_index(col_name);
-    // filter DataContainer
-    for(auto &row : data){
-        // TODO: apply conditions
-
-    }
-    return output;
-}
-
 int DataContainer::get_col_index(const std::string &col_name) {
     auto ip = find(col_names.begin(), col_names.end(), col_name);
     // if the name was found
     if(ip != col_names.end())
         return ip - col_names.begin();
+    else return -1;
 }
 
-/**
- * less than
- * less than or eq
- * greater than
- * greater than or eq
- * equals
- * not equal to
- */
+std::vector<std::vector<double>> DataContainer::get_train() {
+    return train;
+}
+
+std::vector<std::vector<double>> DataContainer::get_test() {
+    return test;
+}
+
+std::vector<double> DataContainer::operator[](const std::string &col_name) {
+    int idx = get_col_index(col_name);
+    return get_col<double>(idx, false);
+}
+
+std::vector<std::vector<double>>
+DataContainer::filter_if_lt(const int &col_index, const int &val, bool train_set, bool equals) {
+    return std::vector<std::vector<double>>();
+}
+
+std::vector<std::vector<double>>
+DataContainer::filter_if_gt(const int &col_index, const int &val, bool train_set, bool equals) {
+    return std::vector<std::vector<double>>();
+}
+
+std::vector<std::vector<double>>
+DataContainer::filter_if_eq(const int &col_index, const int &val, bool train_set, bool equals) {
+    return std::vector<std::vector<double>>();
+}

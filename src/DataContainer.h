@@ -21,6 +21,9 @@ private:
     std::vector< std::string> col_names; // contains the name of all columns
     const std::string container_name;
 
+    std::vector< std::vector<double>> train; // stores the training data set once train_test_split has been called
+    std::vector< std::vector<double>> test; // stores the testing data set once train_test_split has been called
+
 public:
     /**
      * Reads the file specified by the filename
@@ -32,8 +35,6 @@ public:
      *
      * The delimiter is set to comma by default, and skip_header
      * is false by default.
-     *
-     * Example usage: DataContainer("data.csv")
      */
     explicit DataContainer(const std::string& filename, std::string cont_name = "data_container", const char& delimiter = ',');
 
@@ -49,9 +50,6 @@ public:
     /**
      * Displays the top number of rows excluding the header row
      * @param row_count: the number of rows to be displayed
-     *
-     * Example usage: data_container.display(5);
-     * This will display the top 5 rows of the DataContainer called data_container
      */
     void display(int row_count, int display_width = 10);
 
@@ -64,12 +62,6 @@ public:
      * @returns 1: if row removal is successful, but the DataContainer is not empty
      * @returns -1: if the row removal failed due to start_row out of bounds
      * @returns -2: if the row removal failed due to row_count out of bounds
-     *
-     * If the last row is removed from the DataContainer, the destructor will be
-     * called
-     *
-     * Example usage: data_container.drop_row(0,2);
-     * This will remove rows 0 and 1 from the DataContainer called data_container
      */
     int drop_row(const int &start_row = 0, const int &row_count = 1);
 
@@ -81,12 +73,6 @@ public:
       * @returns 0: if no cols exist after the completion
       * @returns 1: if col removal is successful, but DataContainer is not empty
       * @returns -1: if the col removal failed due to start_col out of bounds
-      *
-      * If the last column is removed from the DataContainer, the destructor will be
-      * called
-      *
-      * Example usage: data_container.drop_col(0);
-      * This will drop the first column from the DataContainer called data_container;
       */
     int drop_col(const int &start_col = 0);
 
@@ -96,11 +82,6 @@ public:
      *
      * @return (int) The number of rows if no parameters, or true is provided. The
      * number of columns if false is provided.
-     *
-     * Example usage: data_container.size();
-     * returns the number of rows of the DataContainer data_container
-     *                data_container.size(false);
-     * returns the number of columns of the DataContainer data_container
      */
      unsigned int size(bool rows = true);
 
@@ -152,21 +133,18 @@ public:
 
      /**
       * Creates a new data_container that will contain the test data
-      * @param train: the proportion desired for the training data (0-1)
       * @param test : the proportion desired for the testing data (0-1)
-      * @return a DataContainer object with the test data
       */
-     std::pair<std::vector< std::vector<double>>, std::vector< std::vector<double>>>
-     train_test_split(const float &train, const float &test);
+     void train_test_split(const float &test_ratio);
 
      /**
-      * Overloads the [] operator for filtering purposes
+      * Overloads the [] operator to provide access to a column using
+      * the column name
       *
-      * @tparam T: the type of the column
-      * @param condition: a string containing a valid column name, a comparison operator and a number
-      * @return all rows for which the condition is true in a 2d vector
+      * @param col_name: the name of the column that needs to be accessed
+      * @return all values in the column in the form of a vector of doubles
       */
-     std::vector< std::vector<double>> operator[](const std::string &condition);
+     std::vector<double> operator[](const std::string &col_name);
 
     /**
     * Performs one hot encoding on the column of a DataContainer specified by
@@ -185,6 +163,53 @@ public:
      */
     int get_col_index(const std::string &col_name);
 
+    /**
+     * Getter for self.train
+     * @return a copy of the training data
+     */
+    std::vector< std::vector<double>> get_train();
+
+    /**
+     * Getter for self.test
+     * @return a copy of the testing data
+     */
+    std::vector< std::vector<double>> get_test();
+
+    /**
+     * returns a vector based on whether a col is less than or
+     * less than or equals to a value
+     * @param col_index: the index of the column to be evaluated
+     * @param val: the value to be compared to
+     * @param equals: if true then, lte (less than or equal to), else lt
+     * @param train_set: if true then filters the training set, else test set
+     * @return returns self.train or self.test based on train_set
+     */
+    std::vector< std::vector<double>>
+    filter_if_lt(const int &col_index, const int &val, bool train_set = true, bool equals = false);
+
+    /**
+     * returns a vector based on whether a col is greater than or
+     * greater than or equals to a value
+     * @param col_index: the index of the column to be evaluated
+     * @param val: the value to be compared to
+     * @param train_set: if true then filters the training set, else test set
+     * @param equals: if true then gte, else gt
+     * @return returns self.train or self.test based on train_set
+     */
+    std::vector< std::vector<double>>
+    filter_if_gt(const int &col_index, const int &val, bool train_set = true,  bool equals = false);
+
+    /**
+     * returns a vector based on whether a col is equal to
+     * or not equal to a value
+     * @param col_index: the index of the column to be evaluated
+     * @param val : the value to be compared to
+     * @param train_set: if true then filters the training set, else test set
+     * @param equals: if true then equivalence is tested, else the complement
+     * @return
+     */
+    std::vector< std::vector<double>>
+    filter_if_eq(const int &col_index, const int &val, bool train_set = true,  bool equals = true);
 };
 
 #include "DataContainer_impl.h"

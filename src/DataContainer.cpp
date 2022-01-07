@@ -75,7 +75,7 @@ void DataContainer::display(int row_count, int display_width) {
     }
 }
 
-int DataContainer::drop_row(const int &start_row, const int &row_count) {
+int DataContainer::drop_row(const unsigned int &start_row, const unsigned int &row_count) {
     // if start out of range
     if(start_row >= data.size()) return -1;
     // if end of out range
@@ -87,7 +87,7 @@ int DataContainer::drop_row(const int &start_row, const int &row_count) {
     else return 1;
 }
 
-int DataContainer::drop_col(const int &start_col) {
+int DataContainer::drop_col(const unsigned int &start_col) {
     // remove the column header
     col_names.erase(col_names.begin() + start_col);
     // remove element col_num from every row
@@ -129,7 +129,7 @@ unsigned int DataContainer::size(bool rows) {
         return data[0].size();
 }
 
-std::vector<std::vector<double>> DataContainer::get_rows(const int &start_index, const int &row_count) {
+std::vector<std::vector<double>> DataContainer::get_rows(const unsigned int &start_index, const unsigned int &row_count) {
     // if out of range
     if(start_index + row_count >= data.size())
         throw std::out_of_range("Requested row is out of range");
@@ -207,16 +207,57 @@ std::vector<double> DataContainer::operator[](const std::string &col_name) {
 }
 
 std::vector<std::vector<double>>
-DataContainer::filter_if_lt(const int &col_index, const int &val, bool train_set, bool equals) {
-    return std::vector<std::vector<double>>();
+DataContainer::filter_if_lt(const int &col_index, const double &val, bool train_set, bool equals) {
+    // target pointer, if train_set true, then points to self.train, else points to self.test
+    std::vector< std::vector<double>>* tar;
+    if(train_set) tar = &train;
+    else tar = &test;
+    // copy all rows that fit the criteria into output
+    std::vector< std::vector<double>> output;
+    if(equals)
+        std::copy_if (tar -> begin(), tar -> end(),std::back_inserter(output),
+                      [&col_index, &val](std::vector<double> row){return row[col_index]<=val;} );
+    else
+        std::copy_if (tar -> begin(), tar -> end(),std::back_inserter(output),
+                      [&col_index, &val](std::vector<double> row){return row[col_index]<val;} );
+    return output;
 }
 
 std::vector<std::vector<double>>
-DataContainer::filter_if_gt(const int &col_index, const int &val, bool train_set, bool equals) {
-    return std::vector<std::vector<double>>();
+DataContainer::filter_if_gt(const int &col_index, const double &val, bool train_set, bool equals) {
+    // target pointer, if train_set true, then points to self.train, else points to self.test
+    std::vector< std::vector<double>>* tar;
+    if(train_set) tar = &train;
+    else tar = &test;
+    // copy all rows that fit the criteria into output
+    std::vector< std::vector<double>> output;
+    if(equals)
+        std::copy_if (tar -> begin(), tar -> end(),std::back_inserter(output),
+                      [&col_index, &val](std::vector<double> row){return row[col_index]>=val;} );
+    else
+        std::copy_if (tar -> begin(), tar -> end(),std::back_inserter(output),
+                      [&col_index, &val](std::vector<double> row){return row[col_index]>val;} );
+    return output;
 }
 
 std::vector<std::vector<double>>
-DataContainer::filter_if_eq(const int &col_index, const int &val, bool train_set, bool equals) {
+DataContainer::filter_if_eq(const int &col_index, const double &val, bool train_set, bool equals) {
+    // target pointer, if train_set true, then points to self.train, else points to self.test
+    std::vector< std::vector<double>>* tar;
+    if(train_set) tar = &train;
+    else tar = &test;
+    // copy all rows that fit the criteria into output
+    std::vector< std::vector<double>> output;
+    if(equals)
+        std::copy_if (tar -> begin(), tar -> end(),std::back_inserter(output),
+                      [&col_index, &val](std::vector<double> row){return row[col_index]==val;} );
+    else
+        std::copy_if (tar -> begin(), tar -> end(),std::back_inserter(output),
+                      [&col_index, &val](std::vector<double> row){return row[col_index]!=val;} );
+    return output;
+}
+
+std::vector<std::vector<double>>
+DataContainer::filter(const int &col_index, const double &val, bool greater, bool equals, bool train_set) {
     return std::vector<std::vector<double>>();
 }

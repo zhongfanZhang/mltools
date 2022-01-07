@@ -16,10 +16,10 @@
 
 class DataContainer {
 private:
-    std::vector< std::vector<std::any>> data; // contains all the data excluding the headers
-
-    std::vector< std::string> col_names; // contains the name of all columns
     const std::string container_name;
+
+    std::vector< std::vector<std::any>> data; // contains all the data excluding the headers
+    std::vector< std::string> col_names; // contains the name of all columns
 
     std::vector< std::vector<double>> train; // stores the training data set once train_test_split has been called
     std::vector< std::vector<double>> test; // stores the testing data set once train_test_split has been called
@@ -63,7 +63,7 @@ public:
      * @returns -1: if the row removal failed due to start_row out of bounds
      * @returns -2: if the row removal failed due to row_count out of bounds
      */
-    int drop_row(const int &start_row = 0, const int &row_count = 1);
+    int drop_row(const unsigned int &start_row = 0, const unsigned int &row_count = 1);
 
      /**
       * Removes a set number of columns from the DataContainer
@@ -74,7 +74,7 @@ public:
       * @returns 1: if col removal is successful, but DataContainer is not empty
       * @returns -1: if the col removal failed due to start_col out of bounds
       */
-    int drop_col(const int &start_col = 0);
+    int drop_col(const unsigned int &start_col = 0);
 
     /**
      * Gets the size of the DataContainer in terms of rows and columns
@@ -94,7 +94,7 @@ public:
       * Gets 1 row starting from the second row.
       */
      [[deprecated("Replaced with train_test_split, which outputs the data after splitting it")]]
-     std::vector< std::vector<double>> get_rows(const int &start_index, const int &row_count = 1);
+     std::vector< std::vector<double>> get_rows(const unsigned int &start_index, const unsigned int &row_count = 1);
 
      /**
       * Gets the column specified by the index
@@ -176,6 +176,18 @@ public:
     std::vector< std::vector<double>> get_test();
 
     /**
+     * filters the train or test data set based on a set of parameters
+     *
+     * @param col_index: the column that the filter will be based on
+     * @param val: the value that the column will be evaluated against
+     * @param greater: if true, then a greater than comparison will be made, else less than
+     * @param equals: if true, then a gte, lte, or eq comparison will be made, else gt, lt, ne
+     * @param train_set: if true filter train set, else filter test set
+     * @return filtered train or test data in a vector<vector<double>>
+     */
+    std::vector< std::vector<double>> filter(const int &col_index, const double &val, bool greater, bool equals = false, bool train_set = true);
+
+    /**
      * returns a vector based on whether a col is less than or
      * less than or equals to a value
      * @param col_index: the index of the column to be evaluated
@@ -184,8 +196,9 @@ public:
      * @param train_set: if true then filters the training set, else test set
      * @return returns self.train or self.test based on train_set
      */
+    [[deprecated("All filter functions are combined into filter() instead")]]
     std::vector< std::vector<double>>
-    filter_if_lt(const int &col_index, const int &val, bool train_set = true, bool equals = false);
+    filter_if_lt(const int &col_index, const double &val, bool train_set = true, bool equals = false);
 
     /**
      * returns a vector based on whether a col is greater than or
@@ -196,8 +209,9 @@ public:
      * @param equals: if true then gte, else gt
      * @return returns self.train or self.test based on train_set
      */
+    [[deprecated("All filter functions are combined into filter() instead")]]
     std::vector< std::vector<double>>
-    filter_if_gt(const int &col_index, const int &val, bool train_set = true,  bool equals = false);
+    filter_if_gt(const int &col_index, const double &val, bool train_set = true, bool equals = false);
 
     /**
      * returns a vector based on whether a col is equal to
@@ -208,8 +222,9 @@ public:
      * @param equals: if true then equivalence is tested, else the complement
      * @return
      */
+    [[deprecated("All filter functions are combined into filter() instead")]]
     std::vector< std::vector<double>>
-    filter_if_eq(const int &col_index, const int &val, bool train_set = true,  bool equals = true);
+    filter_if_eq(const int &col_index, const double &val, bool train_set = true, bool equals = true);
 };
 
 #include "DataContainer_impl.h"

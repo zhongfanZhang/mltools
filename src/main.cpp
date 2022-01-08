@@ -7,7 +7,7 @@
 #include <chrono>
 
 //TODO: implement DecisionTreeClassifier
-//TODO: DataContainer filter functions can be combined by adding one more boolean
+//TODO: DataContainer::filter should be refactored to be more readable
 
 
 int main(){
@@ -53,11 +53,7 @@ int main(){
     }catch(std::exception &e){
         std::cout << "encoding first col: " << e.what() << '\n';
     }
-    try{
-        data.one_hot_encoding(3);
-    }catch(std::exception &e){
-        std::cout << "encoding fourth col: " << e.what() << '\n';
-    }
+    data.set_target(3);
     data.display(data.size());
     data.train_test_split(0.2);
     auto train = data.get_train();
@@ -69,12 +65,21 @@ int main(){
         std::cout << '\n';
     }
     std::cout << "outputting filtered train set:\n";
-    auto vec= data.filter(0,2.2,'l',true);
-    for(auto &row : vec){
-        for(auto &elem : row){
-            std::cout << elem << ' ';
+    try {
+        auto vec = data.filter(0, 2.2, 'l', true);
+        for (auto &row: vec.first) {
+            for (auto &elem: row) {
+                std::cout << elem << ' ';
+            }
+            std::cout << '\n';
         }
-        std::cout << '\n';
+        std::cout << "outputting the filtered targets:\n";
+        for(auto &item : vec.second){
+            std::cout << item << '\n';
+        }
+    }catch(std::out_of_range &e){
+        std::cout << e.what() << '\n';
     }
+
     return 0;
 }

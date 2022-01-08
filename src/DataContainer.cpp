@@ -104,21 +104,27 @@ int DataContainer::drop_col(const unsigned int &start_col) {
 void DataContainer::train_test_split(const float &test_ratio) {
     // initialise random seed
     srand(time(NULL));
+    // if class label column has not been set throw exception
+    if(target.empty()) throw std::out_of_range("This function requires a class label column to be set.");
     // multiply test_proportion by 100 and roll random numbers every row to decide set
     int test_proportion = test_ratio * 100;
-    for(auto &row : data){
+    for(int i = 0; i < data.size(); i++){
         int roll = rand()% 100 + 0;
         std::vector<double> temp_row;
         // cast row from any to double
-        temp_row.reserve(row.size());
-        for(auto &element : row){
+        temp_row.reserve(data[i].size());
+        for(auto &element : data[i]){
             temp_row.emplace_back(std::any_cast<double>(element));
         }
         // insert row according to the roll
-        if(roll <= test_proportion)
+        if(roll <= test_proportion) {
             test.push_back(temp_row);
-        else
+            test_tar.push_back(target[i]);
+        }
+        else {
             train.push_back(temp_row);
+            train_tar.push_back(target[i]);
+        }
     }
 }
 
@@ -257,49 +263,85 @@ DataContainer::filter_if_eq(const int &col_index, const double &val, bool train_
     return output;
 }
 
-std::vector<std::vector<double>>
+std::pair<std::vector <std::vector<double>>, std::vector<std::string>>
 DataContainer::filter(const int &col_index, const double &val, const char &comparison, bool equals, bool train_set) {
     // target pointer, if train_set true, then points to self.train, else points to self.test
     std::vector< std::vector<double>>* tar;
-    if(train_set) tar = &train;
-    else tar = &test;
+    // target pointer for class label
+    std::vector< std::string>* tar_tar;
+    // set target pointers
+    if(train_set){
+        tar = &train;
+        tar_tar = &train_tar;
+    }
+    else{
+        tar = &test;
+        tar_tar = &test_tar;
+    }
+    // if target hasnt been set yet, throw exception
+    if(tar_tar->empty()) throw std::out_of_range("This function requires a class label column to be set");
     // copy all rows that fit the criteria into output
     std::vector< std::vector<double>> output;
+    std::vector< std::string> output_tar;
     if(equals) {
         // equ case
         if(comparison == 'e') {
-            std::copy_if(tar->begin(), tar->end(), std::back_inserter(output),
-                         [&col_index, &val](std::vector<double> row) { return row[col_index] == val; });
+            for(int i = 0; i < tar -> size(); i++ ){
+                if(tar->at(i)[col_index] == val){
+                    output.push_back(tar->at(i));
+                    output_tar.push_back(tar_tar->at(i));
+                }
+            }
         }
         // gte case
         else if(comparison == 'g'){
-            std::copy_if(tar->begin(), tar->end(), std::back_inserter(output),
-                         [&col_index, &val](std::vector<double> row) { return row[col_index] >= val; });
+            for(int i = 0; i < tar -> size(); i++ ){
+                if(tar->at(i)[col_index] >= val){
+                    output.push_back(tar->at(i));
+                    output_tar.push_back(tar_tar->at(i));
+                }
+            }
         }
         // lte case
         else if(comparison == 'l'){
-            std::copy_if(tar->begin(), tar->end(), std::back_inserter(output),
-                         [&col_index, &val](std::vector<double> row) { return row[col_index] <= val; });
+            for(int i = 0; i < tar -> size(); i++ ){
+                if(tar->at(i)[col_index] <= val){
+                    output.push_back(tar->at(i));
+                    output_tar.push_back(tar_tar->at(i));
+                }
+            }
         }
     }
     else {
         // neq case
         if(comparison == 'e') {
-            std::copy_if(tar->begin(), tar->end(), std::back_inserter(output),
-                         [&col_index, &val](std::vector<double> row) { return row[col_index] != val; });
+            for(int i = 0; i < tar -> size(); i++ ){
+                if(tar->at(i)[col_index] != val){
+                    output.push_back(tar->at(i));
+                    output_tar.push_back(tar_tar->at(i));
+                }
+            }
         }
         // gt case
         else if(comparison == 'g'){
-            std::copy_if(tar->begin(), tar->end(), std::back_inserter(output),
-                         [&col_index, &val](std::vector<double> row) { return row[col_index] > val; });
+            for(int i = 0; i < tar -> size(); i++ ){
+                if(tar->at(i)[col_index] > val){
+                    output.push_back(tar->at(i));
+                    output_tar.push_back(tar_tar->at(i));
+                }
+            }
         }
         // lt case
         else if(comparison == 'l'){
-            std::copy_if(tar->begin(), tar->end(), std::back_inserter(output),
-                         [&col_index, &val](std::vector<double> row) { return row[col_index] < val; });
+            for(int i = 0; i < tar -> size(); i++ ){
+                if(tar->at(i)[col_index] < val){
+                    output.push_back(tar->at(i));
+                    output_tar.push_back(tar_tar->at(i));
+                }
+            }
         }
     }
-    return output;
+    return {output, output_tar};
 }
 
 void DataContainer::set_target(const int &col_index) {
@@ -322,5 +364,6 @@ void DataContainer::set_target(const int &col_index) {
 std::vector<std::string> *DataContainer::get_target() {
     return &target;
 }
+
 
 

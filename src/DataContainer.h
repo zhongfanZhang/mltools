@@ -12,6 +12,7 @@
 #include <string>
 #include <map>
 #include "ml_util.h"
+#include <functional>
 
 
 class DataContainer {
@@ -25,6 +26,8 @@ private:
     std::vector< std::vector<double>> test; // stores the testing data set once train_test_split has been called
 
     std::vector< std::string> target; // stores the class labels
+    std::vector< std::string> train_tar; // stores the class labels for the training set
+    std::vector< std::string> test_tar; // stores the class labels for the test set
 
 public:
     /**
@@ -187,7 +190,8 @@ public:
      * @param train_set: if true filter train set, else filter test set
      * @return filtered train or test data in a vector<vector<double>>
      */
-    std::vector< std::vector<double>> filter(const int &col_index, const double &val, const char &comparison, bool equals = false, bool train_set = true);
+    std::pair<std::vector <std::vector<double>>, std::vector<std::string>>
+    filter(const int &col_index, const double &val, const char &comparison, bool equals = false, bool train_set = true);
 
     /**
      * returns a vector based on whether a col is less than or

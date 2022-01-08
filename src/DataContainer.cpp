@@ -3,12 +3,6 @@
 //
 
 #include "DataContainer.h"
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <iomanip>
-#include <algorithm>
-#include <utility>
 
 
 DataContainer::DataContainer(const std::string& filename, std::string  cont_name, const char& delimiter)
@@ -135,7 +129,7 @@ unsigned int DataContainer::size(bool rows) {
         return data[0].size();
 }
 
-std::vector<std::vector<double>> DataContainer::get_rows(const unsigned int &start_index, const unsigned int &row_count) {
+[[maybe_unused]] std::vector<std::vector<double>> DataContainer::get_rows(const unsigned int &start_index, const unsigned int &row_count) {
     // if out of range
     if(start_index + row_count >= data.size())
         throw std::out_of_range("Requested row is out of range");
@@ -203,7 +197,7 @@ std::vector<std::vector<double>> DataContainer::get_train() {
     return train;
 }
 
-std::vector<std::vector<double>> DataContainer::get_test() {
+[[maybe_unused]] std::vector<std::vector<double>> DataContainer::get_test() {
     return test;
 }
 
@@ -212,7 +206,7 @@ std::vector<double> DataContainer::operator[](const std::string &col_name) {
     return get_col<double>(idx, false);
 }
 
-std::vector<std::vector<double>>
+[[maybe_unused]] std::vector<std::vector<double>>
 DataContainer::filter_if_lt(const int &col_index, const double &val, bool train_set, bool equals) {
     // target pointer, if train_set true, then points to self.train, else points to self.test
     std::vector< std::vector<double>>* tar;
@@ -229,7 +223,7 @@ DataContainer::filter_if_lt(const int &col_index, const double &val, bool train_
     return output;
 }
 
-std::vector<std::vector<double>>
+[[maybe_unused]] std::vector<std::vector<double>>
 DataContainer::filter_if_gt(const int &col_index, const double &val, bool train_set, bool equals) {
     // target pointer, if train_set true, then points to self.train, else points to self.test
     std::vector< std::vector<double>>* tar;
@@ -246,7 +240,7 @@ DataContainer::filter_if_gt(const int &col_index, const double &val, bool train_
     return output;
 }
 
-std::vector<std::vector<double>>
+[[maybe_unused]] std::vector<std::vector<double>>
 DataContainer::filter_if_eq(const int &col_index, const double &val, bool train_set, bool equals) {
     // target pointer, if train_set true, then points to self.train, else points to self.test
     std::vector< std::vector<double>>* tar;
@@ -361,7 +355,7 @@ void DataContainer::set_target(const int &col_index) {
     }
 }
 
-std::vector<std::string> *DataContainer::get_target() {
+[[maybe_unused]] std::vector<std::string> *DataContainer::get_target() {
     return &target;
 }
 

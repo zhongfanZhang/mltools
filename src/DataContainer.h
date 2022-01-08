@@ -9,11 +9,14 @@
 
 #include <any>
 #include <vector>
-#include <string>
 #include <map>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <iomanip>
+#include <algorithm>
+#include <utility>
 #include "ml_util.h"
-#include <functional>
-
 
 class DataContainer {
 private:
@@ -50,6 +53,7 @@ public:
      * @param in_col_name: column names of the data table
      * @param in_cont_name: a name for the instance of DataContainer
      */
+    [[maybe_unused]]
     DataContainer(std::vector< std::vector<std::any>> in_data, std::vector< std::string> in_col_name, std::string in_cont_name);
 
     /**
@@ -68,6 +72,7 @@ public:
      * @returns -1: if the row removal failed due to start_row out of bounds
      * @returns -2: if the row removal failed due to row_count out of bounds
      */
+    [[maybe_unused]]
     int drop_row(const unsigned int &start_row = 0, const unsigned int &row_count = 1);
 
      /**
@@ -98,7 +103,7 @@ public:
       * Example Usage: data_container.get_rows(1,1);
       * Gets 1 row starting from the second row.
       */
-     [[deprecated("Replaced with train_test_split, which outputs the data after splitting it")]]
+     [[maybe_unused]] [[deprecated("Replaced with train_test_split, which outputs the data after splitting it")]]
      std::vector< std::vector<double>> get_rows(const unsigned int &start_index, const unsigned int &row_count = 1);
 
      /**
@@ -178,6 +183,7 @@ public:
      * Getter for self.test
      * @return a copy of the testing data
      */
+    [[maybe_unused]]
     std::vector< std::vector<double>> get_test();
 
     /**
@@ -202,7 +208,7 @@ public:
      * @param train_set: if true then filters the training set, else test set
      * @return returns self.train or self.test based on train_set
      */
-    [[deprecated("All filter functions are combined into filter() instead")]]
+    [[maybe_unused]] [[deprecated("All filter functions are combined into filter() instead")]]
     std::vector< std::vector<double>>
     filter_if_lt(const int &col_index, const double &val, bool train_set = true, bool equals = false);
 
@@ -215,7 +221,7 @@ public:
      * @param equals: if true then gte, else gt
      * @return returns self.train or self.test based on train_set
      */
-    [[deprecated("All filter functions are combined into filter() instead")]]
+    [[maybe_unused]] [[deprecated("All filter functions are combined into filter() instead")]]
     std::vector< std::vector<double>>
     filter_if_gt(const int &col_index, const double &val, bool train_set = true, bool equals = false);
 
@@ -228,7 +234,7 @@ public:
      * @param equals: if true then equivalence is tested, else the complement
      * @return
      */
-    [[deprecated("All filter functions are combined into filter() instead")]]
+    [[maybe_unused]] [[deprecated("All filter functions are combined into filter() instead")]]
     std::vector< std::vector<double>>
     filter_if_eq(const int &col_index, const double &val, bool train_set = true, bool equals = true);
 
@@ -242,6 +248,7 @@ public:
      * getter for self.target
      * @return the class label column for the current dataset
      */
+    [[maybe_unused]]
     std::vector<std::string>* get_target();
 };
 

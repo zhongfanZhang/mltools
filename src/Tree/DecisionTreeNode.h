@@ -10,9 +10,12 @@ struct DecisionTreeNode{
     DecisionTreeNode* left_child = nullptr;
     DecisionTreeNode* right_child = nullptr;
     // data
-    std::pair<std::string, std::string> condition;
+    double condition;
     std::string node_class;
     float gini;
+    // associated data
+    std::vector< std::vector<double>> samples;
+    std::vector< std::string> labels;
 };
 
 #endif //MLTOOLS_DECISIONTREENODE_H

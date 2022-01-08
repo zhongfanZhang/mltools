@@ -4,19 +4,43 @@
 
 #include "DecisionTree.h"
 #include <algorithm>
+#include <set>
 
 DecisionTree::DecisionTree() {
     // allocate space on heap for root node
     root = new DecisionTreeNode;
     // add root to leaves
-    leaves.emplace_back(root);
+    leaves.push_back(root);
 }
 
-void DecisionTree::write_node(DecisionTreeNode *node, const std::pair<std::string, std::string>& cond, const std::string& node_class,
-                              const float &gini) {
+void DecisionTree::write_node(DecisionTreeNode *node, const double& cond,
+                              const float &gini,
+                              const std::pair<std::vector<std::vector<double>>, std::vector<std::string>> &samples) {
+    node -> samples = samples.first;
+    node -> labels = samples.second;
     node -> condition = cond;
-    node -> node_class = node_class;
     node -> gini = gini;
+    // set node class
+    std::set<std::string> unique(node -> labels.begin(), node -> labels.end());
+    auto itr = unique.begin();
+    // if there is only one unique value, set node_class to that value
+    if(unique.size() == 1) node -> node_class = *itr;
+    // if there is multiple, find the majority
+    else if(unique.size() > 1){
+        std::vector<int> tally(unique.size(), 0);
+        // for each value in label, check which unique label it is and tally
+        for(auto &value : node -> labels){
+            for(int i = 0; i < unique.size(); i++){
+                if(value == *itr)
+                    tally[i]++;
+            }
+        }
+        // get the index of the highest tally and set label
+        auto it = std::max_element(tally.begin(), tally.end());
+        auto index = std::distance(tally.begin(), it);
+        std::advance(itr,index);
+        node -> node_class = *itr;
+    }
 }
 
 void DecisionTree::create_children(DecisionTreeNode *node, bool left, bool right) {
@@ -24,12 +48,12 @@ void DecisionTree::create_children(DecisionTreeNode *node, bool left, bool right
     if(left) {
         node -> left_child = new DecisionTreeNode;
         node -> left_child -> parent = node;
-        leaves.emplace_back(node -> left_child);
+        leaves.push_back(node -> left_child);
     }
     if(right) {
         node -> right_child = new DecisionTreeNode;
         node -> right_child -> parent = node;
-        leaves.emplace_back(node -> right_child);
+        leaves.push_back(node -> right_child);
     }
     // remove self from leaves
     leaves.erase(std::remove(leaves.begin(), leaves.end(), node), leaves.end());

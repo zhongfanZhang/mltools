@@ -26,7 +26,8 @@ public:
      * @param node_class: Label of the node : std::string
      * @param gini: the gini index at the node : float
      */
-    static void write_node(DecisionTreeNode* node, const std::pair<std::string, std::string>& cond,const std::string& node_class, const float& gini);
+    static void write_node(DecisionTreeNode* node, const double &cond, const float& gini,
+                           const std::pair<std::vector<std::vector<double>>, std::vector<std::string>> &samples);
 
     /**
      * Creates children for a particular node

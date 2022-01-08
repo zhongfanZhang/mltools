@@ -258,6 +258,46 @@ DataContainer::filter_if_eq(const int &col_index, const double &val, bool train_
 }
 
 std::vector<std::vector<double>>
-DataContainer::filter(const int &col_index, const double &val, bool greater, bool equals, bool train_set) {
-    return std::vector<std::vector<double>>();
+DataContainer::filter(const int &col_index, const double &val, const char &comparison, bool equals, bool train_set) {
+    // target pointer, if train_set true, then points to self.train, else points to self.test
+    std::vector< std::vector<double>>* tar;
+    if(train_set) tar = &train;
+    else tar = &test;
+    // copy all rows that fit the criteria into output
+    std::vector< std::vector<double>> output;
+    if(equals) {
+        // equ case
+        if(comparison == 'e') {
+            std::copy_if(tar->begin(), tar->end(), std::back_inserter(output),
+                         [&col_index, &val](std::vector<double> row) { return row[col_index] == val; });
+        }
+        // gte case
+        else if(comparison == 'g'){
+            std::copy_if(tar->begin(), tar->end(), std::back_inserter(output),
+                         [&col_index, &val](std::vector<double> row) { return row[col_index] >= val; });
+        }
+        // lte case
+        else if(comparison == 'l'){
+            std::copy_if(tar->begin(), tar->end(), std::back_inserter(output),
+                         [&col_index, &val](std::vector<double> row) { return row[col_index] <= val; });
+        }
+    }
+    else {
+        // neq case
+        if(comparison == 'e') {
+            std::copy_if(tar->begin(), tar->end(), std::back_inserter(output),
+                         [&col_index, &val](std::vector<double> row) { return row[col_index] != val; });
+        }
+        // gt case
+        else if(comparison == 'g'){
+            std::copy_if(tar->begin(), tar->end(), std::back_inserter(output),
+                         [&col_index, &val](std::vector<double> row) { return row[col_index] > val; });
+        }
+        // lt case
+        else if(comparison == 'l'){
+            std::copy_if(tar->begin(), tar->end(), std::back_inserter(output),
+                         [&col_index, &val](std::vector<double> row) { return row[col_index] < val; });
+        }
+    }
+    return output;
 }

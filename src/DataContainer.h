@@ -146,7 +146,7 @@ public:
       */
      std::vector<double> operator[](const std::string &col_name);
 
-    /**
+    /**col_name
     * Performs one hot encoding on the column of a DataContainer specified by
     * col_index, creating a number of new columns based on the unique value
     * count and removing the old column
@@ -180,12 +180,12 @@ public:
      *
      * @param col_index: the column that the filter will be based on
      * @param val: the value that the column will be evaluated against
-     * @param greater: if true, then a greater than comparison will be made, else less than
+     * @param comparison: gt if 1, lt if -1, if 0 and equals = true then equ
      * @param equals: if true, then a gte, lte, or eq comparison will be made, else gt, lt, ne
      * @param train_set: if true filter train set, else filter test set
      * @return filtered train or test data in a vector<vector<double>>
      */
-    std::vector< std::vector<double>> filter(const int &col_index, const double &val, bool greater, bool equals = false, bool train_set = true);
+    std::vector< std::vector<double>> filter(const int &col_index, const double &val, const char &comparison, bool equals = false, bool train_set = true);
 
     /**
      * returns a vector based on whether a col is less than or

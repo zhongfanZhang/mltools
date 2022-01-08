@@ -69,7 +69,7 @@ int main(){
         std::cout << '\n';
     }
     std::cout << "outputting filtered train set:\n";
-    auto vec= data.filter_if_lt(0,2.2,true,true);
+    auto vec= data.filter(0,2.2,'l',true);
     for(auto &row : vec){
         for(auto &elem : row){
             std::cout << elem << ' ';

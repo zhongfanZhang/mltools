@@ -301,3 +301,26 @@ DataContainer::filter(const int &col_index, const double &val, const char &compa
     }
     return output;
 }
+
+void DataContainer::set_target(const int &col_index) {
+    // if string set target to get col
+    if(data[0][col_index].type() == typeid(std::string)) {
+        target = get_col<std::string>(col_index, true);
+        return;
+    }
+    // if double cast to string first
+    else{
+        // add col to target after casting to string
+        for(auto &row : data){
+            target.emplace_back(std::to_string(std::any_cast<double>(row[col_index])));
+        }
+        // remove col
+        drop_col(col_index);
+    }
+}
+
+std::vector<std::string> *DataContainer::get_target() {
+    return &target;
+}
+
+

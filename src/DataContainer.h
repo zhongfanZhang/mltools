@@ -24,6 +24,8 @@ private:
     std::vector< std::vector<double>> train; // stores the training data set once train_test_split has been called
     std::vector< std::vector<double>> test; // stores the testing data set once train_test_split has been called
 
+    std::vector< std::string> target; // stores the class labels
+
 public:
     /**
      * Reads the file specified by the filename
@@ -225,6 +227,18 @@ public:
     [[deprecated("All filter functions are combined into filter() instead")]]
     std::vector< std::vector<double>>
     filter_if_eq(const int &col_index, const double &val, bool train_set = true, bool equals = true);
+
+    /**
+     * sets a column as the class label column
+     * @param col_index: the index of the column to be set as the target
+     */
+    void set_target(const int &col_index);
+
+    /**
+     * getter for self.target
+     * @return the class label column for the current dataset
+     */
+    std::vector<std::string>* get_target();
 };
 
 #include "DataContainer_impl.h"

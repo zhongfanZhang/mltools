@@ -10,6 +10,7 @@ struct DecisionTreeNode{
     DecisionTreeNode* left_child = nullptr;
     DecisionTreeNode* right_child = nullptr;
     // data
+    std::string attribute;
     double condition;
     std::string node_class;
     float gini;

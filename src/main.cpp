@@ -6,9 +6,6 @@
 #include "ml_util.h"
 #include <chrono>
 
-//TODO: implement DecisionTreeClassifier
-//TODO: DataContainer::filter should be refactored to be more readable
-
 
 int main(){
     auto start = std::chrono::high_resolution_clock::now();

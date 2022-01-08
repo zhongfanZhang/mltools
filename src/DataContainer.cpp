@@ -359,5 +359,13 @@ void DataContainer::set_target(const int &col_index) {
     return &target;
 }
 
+std::vector<std::string>* DataContainer::get_train_tar() {
+    return &train_tar;
+}
+
+std::vector<std::string> *DataContainer::get_test_tar() {
+    return &test_tar;
+}
+
 
 

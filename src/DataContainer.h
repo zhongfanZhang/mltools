@@ -250,6 +250,18 @@ public:
      */
     [[maybe_unused]]
     std::vector<std::string>* get_target();
+
+    /**
+     * getter for labels of the training set
+     * @return a reference of the labels of the training set
+     */
+    std::vector<std::string>* get_train_tar();
+
+    /**
+     * getter for labels of the testing set
+     * @return a reference to the labels of the testing set
+     */
+    std::vector<std::string>* get_test_tar();
 };
 
 #include "DataContainer_impl.h"

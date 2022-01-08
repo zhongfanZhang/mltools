@@ -22,11 +22,11 @@ public:
      * Provides access to write details into a node
      *
      * @param node: the address of the node : DecisionTreeNode*
-     * @param cond: condition of the node : std::pair<std::string, std::string>
-     * @param node_class: Label of the node : std::string
+     * @param cond: condition of the node : double
+     * @param samples: the samples and corresponding labels : std::pair< vector<vector<double>>, vector<string>>
      * @param gini: the gini index at the node : float
      */
-    static void write_node(DecisionTreeNode* node, const double &cond, const float& gini,
+    static void write_node(DecisionTreeNode* node, const double &cond, std::string &col, const float& gini,
                            const std::pair<std::vector<std::vector<double>>, std::vector<std::string>> &samples);
 
     /**

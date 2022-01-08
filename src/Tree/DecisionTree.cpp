@@ -14,10 +14,11 @@ DecisionTree::DecisionTree() {
 }
 
 void DecisionTree::write_node(DecisionTreeNode *node, const double& cond,
-                              const float &gini,
+                              std::string &col, const float &gini,
                               const std::pair<std::vector<std::vector<double>>, std::vector<std::string>> &samples) {
     node -> samples = samples.first;
     node -> labels = samples.second;
+    node -> attribute = col;
     node -> condition = cond;
     node -> gini = gini;
     // set node class

@@ -2,6 +2,7 @@
 // Created by Admin on 4/01/2022.
 //
 
+#include <numeric>
 #include "DecisionTreeClassifier.h"
 
 DecisionTreeClassifier::DecisionTreeClassifier(DataContainer* data_container) {
@@ -20,5 +21,7 @@ void DecisionTreeClassifier::fit(int max_depth) {
 }
 
 double DecisionTreeClassifier::entropy(const std::vector<double> &col, const std::vector<std::string> &labels) {
-    return 0;
+    // find the average of the column to use as a splitting point
+    double col_mean = std::reduce(col.begin(), col.end()) / col.size();
+    
 }

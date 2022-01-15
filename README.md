@@ -1,5 +1,28 @@
 # ml_tools dev log
 
+## 16 Jan 2022 - Inheritance vs Composition
+### Current Design Direction
+Currently, the plan is to store data in the DataContainer class in std::map containers, a column key will be mapped to a vector of numeric values. String data will still be supported as the 'label' column, but it will not be supported for learning data. This will improve performance by removing the need to use std::any_cast whenever any data needs to be accessed, this will also provide easier access to columns through the use of column names.
+
+### Concerns with Composition
+However, as there will be a training data set, a testing data set, a vector of labels for the training data set as well as for the testing data set, a large amount of access functions will be required if I were to compose, for example the DecisionTreeClassifier class with the DataContainer class. Not only will I have to have access functions for the columns, there will also be a need to get rows and columns are filtering, getting unique values from each row, etc.
+
+This can be solved using the friend keyword in C++, however, this will result in the DataContainer class having a long list of friend classes once more models are implemented. However, the advantage of this is that DataContainer will be able to be used in its own right, which also improves the reusability of the DataContainer class. However, if I were to continue with the current design, the DataContainer class can still be extended to have a class in its own right.
+
+### Concerns with Inheritance
+Using an inheritance model is not without its concerns either. After doing some research on the topic, it seems that many programmers recommend the use of composition over inheritance as a rule of thumb. 
+
+My major concern with using multiple inheritance is that classes that represent the machine learning models, through their multiple inheritance will have an extremely large amount of members. While each individual class may not appear to be bloated, the aggregates of these base class will be inheriting members left right and center, if exceptions and bugs are not well captured, it may be even more difficult to debug in the future.
+
+Another major concern is that scalability is not possible with the current design where a machine learning model 'owns' their respective data sets. For example, if I expose the data set to another model through a copy, memory is being wasted, however, if I expose it by reference, then the other model may make unwanted changes to the data, causing the original owner of the data to malfunction - this will be highly dangerous and hard to debug. 
+
+### Decision and Moving Forward - Inheritance and a touch of Composition
+I have decided to use inheritance over composition for the following reasons:
+- **Data Member Access**: While I can use a friend access modifier to provide easy data access, this will defeat the purpose of encapsulation and potentially create problems when the project is scaled up, therefore, the DataContainer class will be extremely bloated by all the data processing methods, getters and setters that all the models will be requiring
+- **Extensibility of DataContainer**: a derived class can be used to create a class purely for data processing manually, once this has been done, the machine learning models can be updated to work with this new class as well.
+- **Scalability**: In order to support a machine learning solution architechture that will involve a number of different models sharing the same data, the current plan will be to use a ensemble class. This class will be a composition of machine learning models and will provide methods to facilitate ensemble learning and secure data sharing.
+- **Bloat through multiple inheritance**: This is a difficult problem to solve as of now. My current plan is to simply go along with multiple inheritance with preventing code bloat and exception leaks between classes in mind.
+
 ## 15 Jan 2022 - The beginning of a new chapter
 ### Overhaulling class design
 Over the last couple of days, I have been conducting experiments with C++ inheritance and polymorphism in order to implement a more C++

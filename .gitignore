@@ -1,5 +1,5 @@
 .vs/
 .idea/
 cmake-build-debug/
-tests/
 data/
+*.csv

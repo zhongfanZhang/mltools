@@ -1,8 +1,0 @@
-TODO: implement DecisionTreeClassifier
-    TODO: implement entropy, think about the splits when there are a large number of classes
-    TODO: to implement entropy, a function that returns the number of unique values and their tally will make it a lot easier
-    TODO: the above could be done by refactoring DataContainer::unique to a static class member function
-
-TODO: DataContainer::filter should be refactored to be more readable
-    TODO: re-organise DataContainer.h so that the public member functions are in categories for ease of reading
-    TODO: re-organise DataContainer.cpp to fit the above order
